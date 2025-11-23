@@ -1,6 +1,6 @@
 """Note model for storing rich text content."""
 from datetime import datetime
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, List
 from sqlalchemy import String, DateTime, ForeignKey, Text, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -8,6 +8,7 @@ from src.study_helper.db.base import Base
 
 if TYPE_CHECKING:
     from src.study_helper.models.course import Course
+    from src.study_helper.models.note_task_link import NoteTaskLink
 
 
 class Note(Base):
@@ -45,6 +46,11 @@ class Note(Base):
     
     # Relationships
     course: Mapped["Course"] = relationship(back_populates="notes")
+    task_links: Mapped[List["NoteTaskLink"]] = relationship(
+        "NoteTaskLink",
+        back_populates="note",
+        cascade="all, delete-orphan"
+    )
     
     # Composite Index for sorting notes in course (T086)
     __table_args__ = (

@@ -284,3 +284,158 @@ class TestNotesAPI:
         assert len(data) == 2
         assert data[0]["title"] == "A Note"
         assert data[1]["title"] == "Z Note"
+    
+    async def test_link_note_to_task_success(self, client: AsyncClient, db_session: AsyncSession):
+        """T203 [RED]: Test POST /api/v1/notes/{note_id}/link-task links note to task and returns 201."""
+        from src.study_helper.services.task import create_task
+        
+        # Register user and create course
+        user = await register_user(
+            db_session,
+            email="test@example.com",
+            password="password123",
+            full_name="Test User"
+        )
+        course = await create_course(
+            db_session,
+            user_id=user.id,
+            name="CS 101",
+            color="#3B82F6"
+        )
+        
+        # Create note and task
+        note = await create_note(
+            db_session,
+            course_id=course.id,
+            title="Lecture Notes",
+            content="Content"
+        )
+        task = await create_task(
+            db_session,
+            course_id=course.id,
+            title="Assignment",
+            priority="high"
+        )
+        
+        # Login
+        login_response = await client.post(
+            "/api/v1/auth/login",
+            json={"email": "test@example.com", "password": "password123"}
+        )
+        token = login_response.json()["access_token"]
+        
+        # Link note to task via API
+        response = await client.post(
+            f"/api/v1/notes/{note.id}/link-task",
+            json={"task_id": task.id},
+            headers={"Authorization": f"Bearer {token}"}
+        )
+        
+        assert response.status_code == 201
+        data = response.json()
+        assert data["note_id"] == note.id
+        assert data["task_id"] == task.id
+    
+    async def test_link_note_to_task_duplicate_returns_409(self, client: AsyncClient, db_session: AsyncSession):
+        """T204 [RED]: Test duplicate link returns 409 Conflict."""
+        from src.study_helper.services.task import create_task
+        from src.study_helper.services.note import link_note_to_task
+        
+        # Register user and create course
+        user = await register_user(
+            db_session,
+            email="test@example.com",
+            password="password123",
+            full_name="Test User"
+        )
+        course = await create_course(
+            db_session,
+            user_id=user.id,
+            name="CS 101",
+            color="#3B82F6"
+        )
+        
+        # Create note and task
+        note = await create_note(
+            db_session,
+            course_id=course.id,
+            title="Notes",
+            content="Content"
+        )
+        task = await create_task(
+            db_session,
+            course_id=course.id,
+            title="Task",
+            priority="medium"
+        )
+        
+        # Create link directly
+        await link_note_to_task(db_session, note.id, task.id)
+        
+        # Login
+        login_response = await client.post(
+            "/api/v1/auth/login",
+            json={"email": "test@example.com", "password": "password123"}
+        )
+        token = login_response.json()["access_token"]
+        
+        # Attempt duplicate link via API
+        response = await client.post(
+            f"/api/v1/notes/{note.id}/link-task",
+            json={"task_id": task.id},
+            headers={"Authorization": f"Bearer {token}"}
+        )
+        
+        assert response.status_code == 409
+        assert "already linked" in response.json()["detail"].lower()
+    
+    async def test_unlink_note_from_task_returns_204(self, client: AsyncClient, db_session: AsyncSession):
+        """T205 [RED]: Test DELETE /api/v1/notes/{note_id}/link-task/{task_id} returns 204."""
+        from src.study_helper.services.task import create_task
+        from src.study_helper.services.note import link_note_to_task
+        
+        # Register user and create course
+        user = await register_user(
+            db_session,
+            email="test@example.com",
+            password="password123",
+            full_name="Test User"
+        )
+        course = await create_course(
+            db_session,
+            user_id=user.id,
+            name="CS 101",
+            color="#3B82F6"
+        )
+        
+        # Create note and task
+        note = await create_note(
+            db_session,
+            course_id=course.id,
+            title="Notes",
+            content="Content"
+        )
+        task = await create_task(
+            db_session,
+            course_id=course.id,
+            title="Task",
+            priority="low"
+        )
+        
+        # Create link
+        await link_note_to_task(db_session, note.id, task.id)
+        
+        # Login
+        login_response = await client.post(
+            "/api/v1/auth/login",
+            json={"email": "test@example.com", "password": "password123"}
+        )
+        token = login_response.json()["access_token"]
+        
+        # Unlink via API
+        response = await client.delete(
+            f"/api/v1/notes/{note.id}/link-task/{task.id}",
+            headers={"Authorization": f"Bearer {token}"}
+        )
+        
+        assert response.status_code == 204

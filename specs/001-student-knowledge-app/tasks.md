@@ -385,35 +385,35 @@ Polish (Phase 10)
 ### NoteTaskLink Model (US3)
 
 **TDD: Many-to-Many Relationship**:
-- [ ] T188 [P] [US3] **[RED]** Write test_note_task_link_creation() in backend/tests/unit/test_models.py
-- [ ] T189 [P] [US3] **[RED]** Write test_note_task_link_unique_constraint()
-- [ ] T190 [P] [US3] **[GREEN]** Create backend/src/study_helper/models/note_task_link.py per data-model.md § 2.5
-- [ ] T191 [P] [US3] **[GREEN]** Add composite primary key (note_id, task_id)
-- [ ] T192 [P] [US3] **[GREEN]** Add unique constraint on (note_id, task_id)
-- [ ] T193 [P] [US3] **[GREEN]** Run migration: `alembic revision --autogenerate -m "Add NoteTaskLink table"`
+- [X] T188 [US3] **[RED]** Write test_note_task_link_creation() in backend/tests/unit/test_models.py
+- [X] T189 [P] [US3] **[RED]** Write test_note_task_link_unique_constraint()
+- [X] T190 [P] [US3] **[GREEN]** Create backend/src/study_helper/models/note_task_link.py per data-model.md § 2.5
+- [X] T191 [P] [US3] **[GREEN]** Add composite primary key (note_id, task_id)
+- [X] T192 [P] [US3] **[GREEN]** Add unique constraint on (note_id, task_id)
+- [X] T193 [P] [US3] **[GREEN]** Run migration: `alembic revision --autogenerate -m "Add NoteTaskLink table"`
 
 ### Service Layer (US3)
 
 **TDD: Linking Logic**:
-- [ ] T194 [US3] **[RED]** Write test_link_note_to_task() in backend/tests/integration/test_note_service.py
-- [ ] T195 [US3] **[RED]** Write test_link_note_to_task_duplicate_fails()
-- [ ] T196 [US3] **[RED]** Write test_unlink_note_from_task()
-- [ ] T197 [US3] **[RED]** Write test_delete_note_removes_links_keeps_tasks()
-- [ ] T198 [US3] **[GREEN]** Add link_note_to_task(note_id, task_id) function to note.py service
-- [ ] T199 [US3] **[GREEN]** Add unlink_note_from_task(note_id, task_id) function
-- [ ] T200 [US3] **[GREEN]** Update get_notes_by_course() to include linked_tasks in response
-- [ ] T201 [US3] **[GREEN]** Update get_tasks_by_course() to include linked_notes_count in response
-- [ ] T202 [US3] **[REFACTOR]** Use SQLAlchemy selectinload() to prevent N+1 queries on links
+- [X] T194 [US3] **[RED]** Write test_link_note_to_task() in backend/tests/integration/test_note_service.py
+- [X] T195 [US3] **[RED]** Write test_link_note_to_task_duplicate_fails()
+- [X] T196 [US3] **[RED]** Write test_unlink_note_from_task()
+- [X] T197 [US3] **[RED]** Write test_delete_note_removes_links_keeps_tasks()
+- [X] T198 [US3] **[GREEN]** Add link_note_to_task(note_id, task_id) function to note.py service
+- [X] T199 [US3] **[GREEN]** Add unlink_note_from_task(note_id, task_id) function
+- [X] T200 [US3] **[GREEN]** Update get_notes_by_course() to include linked_tasks in response
+- [X] T201 [US3] **[GREEN]** Update get_tasks_by_course() to include linked_notes_count in response
+- [X] T202 [US3] **[REFACTOR]** Use SQLAlchemy selectinload() to prevent N+1 queries on links
 
 ### API Endpoints (US3)
 
 **TDD: Link Endpoints**:
-- [ ] T203 [US3] **[RED]** Write test_link_note_to_task_success() in backend/tests/contract/test_notes_api.py
-- [ ] T204 [US3] **[RED]** Write test_link_note_to_task_duplicate_returns_409()
-- [ ] T205 [US3] **[RED]** Write test_unlink_note_from_task_returns_204()
-- [ ] T206 [US3] **[GREEN]** Add POST /api/v1/notes/{note_id}/link-task endpoint
-- [ ] T207 [US3] **[GREEN]** Add DELETE /api/v1/notes/{note_id}/link-task/{task_id} endpoint
-- [ ] T208 [US3] **[REFACTOR]** Add 404 handling for non-existent notes or tasks
+- [X] T203 [US3] **[RED]** Write test_link_note_to_task_success() in backend/tests/contract/test_notes_api.py
+- [X] T204 [US3] **[RED]** Write test_link_note_to_task_duplicate_returns_409()
+- [X] T205 [US3] **[RED]** Write test_unlink_note_from_task_returns_204()
+- [X] T206 [US3] **[GREEN]** Add POST /api/v1/notes/{note_id}/link-task endpoint
+- [X] T207 [US3] **[GREEN]** Add DELETE /api/v1/notes/{note_id}/link-task/{task_id} endpoint
+- [X] T208 [US3] **[REFACTOR]** Add 404 handling for non-existent notes or tasks
 
 ### Frontend (US3 - Linking UI)
 

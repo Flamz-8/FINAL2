@@ -187,7 +187,7 @@ class TestNoteTaskLink:
         db_session.add(user)
         await db_session.commit()
         
-        course = Course(user_id=user.id, title="CS 101", color="#3B82F6")
+        course = Course(user_id=user.id, name="CS 101", color="#3B82F6")
         db_session.add(course)
         await db_session.commit()
         
@@ -227,7 +227,7 @@ class TestNoteTaskLink:
         db_session.add(user)
         await db_session.commit()
         
-        course = Course(user_id=user.id, title="CS 101", color="#3B82F6")
+        course = Course(user_id=user.id, name="CS 101", color="#3B82F6")
         db_session.add(course)
         await db_session.commit()
         

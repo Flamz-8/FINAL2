@@ -1,6 +1,6 @@
 """Task model for todo items with due dates and priority."""
 from datetime import datetime
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, List
 from enum import Enum
 from sqlalchemy import String, DateTime, ForeignKey, Text, Boolean, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -9,6 +9,7 @@ from src.study_helper.db.base import Base
 
 if TYPE_CHECKING:
     from src.study_helper.models.course import Course
+    from src.study_helper.models.note_task_link import NoteTaskLink
 
 
 class TaskPriority(str, Enum):
@@ -62,6 +63,11 @@ class Task(Base):
     
     # Relationships
     course: Mapped["Course"] = relationship(back_populates="tasks")
+    note_links: Mapped[List["NoteTaskLink"]] = relationship(
+        "NoteTaskLink",
+        back_populates="task",
+        cascade="all, delete-orphan"
+    )
     
     # Composite Indexes for task queries (T086)
     __table_args__ = (

@@ -1,4 +1,4 @@
-"""Integration tests for Note service layer (T096-T099)."""
+"""Integration tests for Note service layer (T096-T099, T194-T197)."""
 import pytest
 from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -11,6 +11,7 @@ from src.study_helper.services.note import (
     update_note,
     delete_note,
 )
+from src.study_helper.services.task import create_task
 from src.study_helper.models.note import Note
 
 
@@ -175,3 +176,200 @@ class TestNoteService:
         deleted_note = result.scalar_one_or_none()
         
         assert deleted_note is None
+    
+    async def test_link_note_to_task(self, db_session: AsyncSession):
+        """T194 [RED]: Test linking a note to a task."""
+        from src.study_helper.services.note import link_note_to_task
+        
+        # Create user, course, note, and task
+        user = await register_user(
+            db_session,
+            email="test@example.com",
+            password="password123",
+            full_name="Test User"
+        )
+        course = await create_course(
+            db_session,
+            user_id=user.id,
+            name="CS 101",
+            color="#3B82F6"
+        )
+        note = await create_note(
+            db_session,
+            course_id=course.id,
+            title="Lecture Notes",
+            content="Content"
+        )
+        task = await create_task(
+            db_session,
+            course_id=course.id,
+            title="Assignment 1",
+            priority="high"
+        )
+        
+        # Link note to task
+        link = await link_note_to_task(
+            db=db_session,
+            note_id=note.id,
+            task_id=task.id
+        )
+        
+        assert link is not None
+        assert link.note_id == note.id
+        assert link.task_id == task.id
+    
+    async def test_link_note_to_task_duplicate_fails(self, db_session: AsyncSession):
+        """T195 [RED]: Test duplicate link raises error."""
+        from src.study_helper.services.note import link_note_to_task
+        from sqlalchemy.exc import IntegrityError
+        
+        # Create user, course, note, and task
+        user = await register_user(
+            db_session,
+            email="test@example.com",
+            password="password123",
+            full_name="Test User"
+        )
+        course = await create_course(
+            db_session,
+            user_id=user.id,
+            name="CS 101",
+            color="#3B82F6"
+        )
+        note = await create_note(
+            db_session,
+            course_id=course.id,
+            title="Notes",
+            content="Content"
+        )
+        task = await create_task(
+            db_session,
+            course_id=course.id,
+            title="Task",
+            priority="medium"
+        )
+        
+        # Create first link
+        await link_note_to_task(db_session, note.id, task.id)
+        
+        # Attempt duplicate link - should fail
+        with pytest.raises(IntegrityError):
+            await link_note_to_task(db_session, note.id, task.id)
+    
+    async def test_unlink_note_from_task(self, db_session: AsyncSession):
+        """T196 [RED]: Test unlinking a note from a task."""
+        from src.study_helper.services.note import link_note_to_task, unlink_note_from_task
+        from src.study_helper.models.note_task_link import NoteTaskLink
+        from sqlalchemy.future import select
+        
+        # Create user, course, note, and task
+        user = await register_user(
+            db_session,
+            email="test@example.com",
+            password="password123",
+            full_name="Test User"
+        )
+        course = await create_course(
+            db_session,
+            user_id=user.id,
+            name="CS 101",
+            color="#3B82F6"
+        )
+        note = await create_note(
+            db_session,
+            course_id=course.id,
+            title="Notes",
+            content="Content"
+        )
+        task = await create_task(
+            db_session,
+            course_id=course.id,
+            title="Task",
+            priority="low"
+        )
+        
+        # Create link
+        await link_note_to_task(db_session, note.id, task.id)
+        
+        # Verify link exists
+        result = await db_session.execute(
+            select(NoteTaskLink).where(
+                NoteTaskLink.note_id == note.id,
+                NoteTaskLink.task_id == task.id
+            )
+        )
+        assert result.scalar_one_or_none() is not None
+        
+        # Unlink
+        await unlink_note_from_task(
+            db=db_session,
+            note_id=note.id,
+            task_id=task.id
+        )
+        
+        # Verify link is removed
+        result = await db_session.execute(
+            select(NoteTaskLink).where(
+                NoteTaskLink.note_id == note.id,
+                NoteTaskLink.task_id == task.id
+            )
+        )
+        assert result.scalar_one_or_none() is None
+    
+    async def test_delete_note_removes_links_keeps_tasks(self, db_session: AsyncSession):
+        """T197 [RED]: Test deleting a note removes links but keeps tasks."""
+        from src.study_helper.services.note import link_note_to_task
+        from src.study_helper.models.note_task_link import NoteTaskLink
+        from src.study_helper.models.task import Task
+        from sqlalchemy.future import select
+        
+        # Create user, course, note, and task
+        user = await register_user(
+            db_session,
+            email="test@example.com",
+            password="password123",
+            full_name="Test User"
+        )
+        course = await create_course(
+            db_session,
+            user_id=user.id,
+            name="CS 101",
+            color="#3B82F6"
+        )
+        note = await create_note(
+            db_session,
+            course_id=course.id,
+            title="Notes",
+            content="Content"
+        )
+        task = await create_task(
+            db_session,
+            course_id=course.id,
+            title="Task",
+            priority="high"
+        )
+        
+        # Link note to task
+        await link_note_to_task(db_session, note.id, task.id)
+        
+        # Delete note
+        await delete_note(db_session, note.id)
+        
+        # Verify note is deleted
+        result = await db_session.execute(
+            select(Note).where(Note.id == note.id)
+        )
+        assert result.scalar_one_or_none() is None
+        
+        # Verify link is deleted (cascade)
+        result = await db_session.execute(
+            select(NoteTaskLink).where(NoteTaskLink.note_id == note.id)
+        )
+        assert result.scalar_one_or_none() is None
+        
+        # Verify task still exists
+        result = await db_session.execute(
+            select(Task).where(Task.id == task.id)
+        )
+        assert result.scalar_one_or_none() is not None
+

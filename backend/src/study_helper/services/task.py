@@ -1,9 +1,10 @@
-"""Task service layer for business logic (T133-T137, T171-T173)."""
+"""Task service layer for business logic (T133-T137, T171-T173, T201-T202)."""
 from typing import List, Optional, Literal
 from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import desc, asc
+from sqlalchemy.orm import selectinload
 from fastapi import HTTPException, status
 
 from src.study_helper.models.task import Task
@@ -19,7 +20,9 @@ async def create_task(
     priority: str = "medium"
 ) -> Task:
     """
-    Create a new task (T133).
+    Create a new task (T133, T201).
+    
+    Eagerly loads note_links to prevent lazy loading issues (T202).
     
     Args:
         db: Database session
@@ -30,7 +33,7 @@ async def create_task(
         priority: Priority level (low/medium/high)
         
     Returns:
-        Task: Created task instance
+        Task: Created task instance with note_links loaded
     """
     task = Task(
         course_id=course_id,
@@ -43,7 +46,9 @@ async def create_task(
     
     db.add(task)
     await db.commit()
-    await db.refresh(task)
+    
+    # Refresh with eager loading (T202)
+    await db.refresh(task, attribute_names=["note_links"])
     
     return task
 
@@ -59,7 +64,9 @@ async def get_tasks_by_course(
     view: Optional[Literal["all", "today", "week", "upcoming"]] = "all"
 ) -> List[Task]:
     """
-    Get tasks for a course with filtering, sorting, and pagination (T134, T171-T173).
+    Get tasks for a course with filtering, sorting, and pagination (T134, T171-T173, T201-T202).
+    
+    Uses selectinload() to eagerly load note_links and prevent N+1 queries (T202).
     
     Args:
         db: Database session
@@ -72,10 +79,14 @@ async def get_tasks_by_course(
         view: Time-based filter (all/today/week/upcoming) [T171]
         
     Returns:
-        List[Task]: List of tasks sorted as specified
+        List[Task]: List of tasks with note_links eagerly loaded
     """
-    # Build query
-    query = select(Task).where(Task.course_id == course_id)
+    # Build query with eager loading (T202 - prevent N+1)
+    query = (
+        select(Task)
+        .where(Task.course_id == course_id)
+        .options(selectinload(Task.note_links))  # T202: Prevent N+1 queries
+    )
     
     # Filter by completed status
     if completed is not None:
@@ -181,7 +192,7 @@ async def update_task(
             task.completed_at = None
     
     await db.commit()
-    await db.refresh(task)
+    await db.refresh(task, attribute_names=["note_links"])
     
     return task
 

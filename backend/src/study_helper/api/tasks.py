@@ -1,4 +1,4 @@
-"""Task API endpoints (T142-T145)."""
+"""Task API endpoints (T142-T145, T201)."""
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -39,9 +39,9 @@ async def create_task_endpoint(
         priority=task_data.priority
     )
     
-    # Add empty subtasks and linked_notes_count (will be populated in US3/US4)
+    # Add empty subtasks and linked_notes_count from note_links (T201)
     task.subtasks = []
-    task.linked_notes_count = 0
+    task.linked_notes_count = len(task.note_links)
     
     return TaskResponse.model_validate(task)
 
@@ -85,11 +85,11 @@ async def get_tasks_by_course_endpoint(
         view=view
     )
     
-    # Add empty subtasks and linked_notes_count to each task (will be populated in US3/US4)
+    # Add empty subtasks and linked_notes_count from note_links (T201)
     task_responses = []
     for task in tasks:
         task.subtasks = []
-        task.linked_notes_count = 0
+        task.linked_notes_count = len(task.note_links)
         task_responses.append(TaskResponse.model_validate(task))
     
     return task_responses
@@ -122,9 +122,9 @@ async def update_task_endpoint(
         **update_data
     )
     
-    # Add empty subtasks and linked_notes_count (will be populated in US3/US4)
+    # Add empty subtasks and linked_notes_count from note_links (T201)
     task.subtasks = []
-    task.linked_notes_count = 0
+    task.linked_notes_count = len(task.note_links)
     
     return TaskResponse.model_validate(task)
 
@@ -187,7 +187,7 @@ async def get_tasks_today(
     task_responses = []
     for task in all_tasks:
         task.subtasks = []
-        task.linked_notes_count = 0
+        task.linked_notes_count = len(task.note_links)
         task_responses.append(TaskResponse.model_validate(task))
     
     return task_responses
@@ -227,7 +227,7 @@ async def get_tasks_week(
     task_responses = []
     for task in all_tasks:
         task.subtasks = []
-        task.linked_notes_count = 0
+        task.linked_notes_count = len(task.note_links)
         task_responses.append(TaskResponse.model_validate(task))
     
     return task_responses
@@ -267,7 +267,7 @@ async def get_tasks_upcoming(
     task_responses = []
     for task in all_tasks:
         task.subtasks = []
-        task.linked_notes_count = 0
+        task.linked_notes_count = len(task.note_links)
         task_responses.append(TaskResponse.model_validate(task))
     
     return task_responses
