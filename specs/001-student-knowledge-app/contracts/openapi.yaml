@@ -1,0 +1,883 @@
+openapi: 3.1.0
+info:
+  title: Student Knowledge Management API
+  description: RESTful API for personal knowledge management app for students
+  version: 1.0.0
+  contact:
+    name: Study Helper Support
+    email: support@studyhelper.local
+
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Development server
+  - url: https://api.studyhelper.app/api/v1
+    description: Production server
+
+tags:
+  - name: auth
+    description: Authentication and user management
+  - name: courses
+    description: Course management
+  - name: notes
+    description: Note creation and management
+  - name: tasks
+    description: Task and subtask management
+  - name: search
+    description: Full-text search
+  - name: sync
+    description: Offline synchronization
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - full_name
+        - created_at
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          example: alice@college.edu
+        full_name:
+          type: string
+          maxLength: 100
+          example: Alice Johnson
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-01-23T10:30:00Z"
+
+    Course:
+      type: object
+      required:
+        - id
+        - name
+        - color
+        - is_archived
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          maxLength: 200
+          example: Biology 101
+        description:
+          type: string
+          nullable: true
+          maxLength: 2000
+          example: Introduction to cellular biology
+        color:
+          type: string
+          pattern: ^#[0-9A-Fa-f]{6}$
+          example: "#10B981"
+        is_archived:
+          type: boolean
+          example: false
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        notes_count:
+          type: integer
+          example: 5
+        tasks_count:
+          type: integer
+          example: 3
+
+    Note:
+      type: object
+      required:
+        - id
+        - course_id
+        - title
+        - content
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: integer
+          example: 1
+        course_id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          maxLength: 300
+          example: Cell Division Lecture
+        content:
+          type: string
+          maxLength: 50000
+          example: "# Mitosis\n\n**Prophase**: Chromosomes condense..."
+        tags:
+          type: string
+          nullable: true
+          maxLength: 500
+          example: "mitosis,cell-cycle,biology"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        linked_tasks:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              title:
+                type: string
+
+    Task:
+      type: object
+      required:
+        - id
+        - course_id
+        - title
+        - priority
+        - is_completed
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: integer
+          example: 5
+        course_id:
+          type: integer
+          example: 1
+        parent_task_id:
+          type: integer
+          nullable: true
+          example: null
+        title:
+          type: string
+          maxLength: 300
+          example: Study for midterm
+        description:
+          type: string
+          nullable: true
+          maxLength: 2000
+          example: Review chapters 1-5
+        due_date:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2025-01-30T23:59:00Z"
+        priority:
+          type: string
+          enum: [low, medium, high]
+          example: high
+        is_completed:
+          type: boolean
+          example: false
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: null
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        subtasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        linked_notes_count:
+          type: integer
+          example: 1
+
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              example: INVALID_INPUT
+            message:
+              type: string
+              example: Email format is invalid
+            field:
+              type: string
+              example: email
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: Register new user
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - full_name
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                full_name:
+                  type: string
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Authenticate user
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                    example: bearer
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /courses:
+    get:
+      tags:
+        - courses
+      summary: List user's courses
+      operationId: listCourses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: is_archived
+          in: query
+          schema:
+            type: boolean
+          description: Filter by archive status
+      responses:
+        '200':
+          description: List of courses
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  courses:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Course'
+                  total:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags:
+        - courses
+      summary: Create new course
+      operationId: createCourse
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  maxLength: 200
+                description:
+                  type: string
+                  maxLength: 2000
+                color:
+                  type: string
+                  pattern: ^#[0-9A-Fa-f]{6}$
+                  default: "#3B82F6"
+      responses:
+        '201':
+          description: Course created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /courses/{course_id}:
+    patch:
+      tags:
+        - courses
+      summary: Update course
+      operationId: updateCourse
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                color:
+                  type: string
+                is_archived:
+                  type: boolean
+      responses:
+        '200':
+          description: Course updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags:
+        - courses
+      summary: Delete course
+      operationId: deleteCourse
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Course deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /courses/{course_id}/notes:
+    get:
+      tags:
+        - notes
+      summary: List notes in course
+      operationId: listNotes
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: sort_by
+          in: query
+          schema:
+            type: string
+            enum: [created_at, updated_at, title]
+            default: created_at
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        '200':
+          description: List of notes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Note'
+                  total:
+                    type: integer
+
+  /notes:
+    post:
+      tags:
+        - notes
+      summary: Create new note
+      operationId: createNote
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - course_id
+                - title
+                - content
+              properties:
+                course_id:
+                  type: integer
+                title:
+                  type: string
+                content:
+                  type: string
+                tags:
+                  type: string
+      responses:
+        '201':
+          description: Note created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+
+  /notes/{note_id}:
+    patch:
+      tags:
+        - notes
+      summary: Update note
+      operationId: updateNote
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: note_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+                tags:
+                  type: string
+      responses:
+        '200':
+          description: Note updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+
+    delete:
+      tags:
+        - notes
+      summary: Delete note
+      operationId: deleteNote
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: note_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Note deleted
+
+  /notes/{note_id}/link-task:
+    post:
+      tags:
+        - notes
+      summary: Link note to task
+      operationId: linkNoteToTask
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: note_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - task_id
+              properties:
+                task_id:
+                  type: integer
+      responses:
+        '200':
+          description: Link created
+        '409':
+          description: Link already exists
+
+  /courses/{course_id}/tasks:
+    get:
+      tags:
+        - tasks
+      summary: List tasks in course
+      operationId: listTasks
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: view
+          in: query
+          schema:
+            type: string
+            enum: [all, week]
+            default: all
+        - name: completed
+          in: query
+          schema:
+            type: boolean
+        - name: sort_by
+          in: query
+          schema:
+            type: string
+            enum: [created_at, due_date, priority]
+            default: created_at
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+      responses:
+        '200':
+          description: List of tasks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tasks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+                  total:
+                    type: integer
+
+  /tasks:
+    post:
+      tags:
+        - tasks
+      summary: Create new task
+      operationId: createTask
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - course_id
+                - title
+              properties:
+                course_id:
+                  type: integer
+                parent_task_id:
+                  type: integer
+                title:
+                  type: string
+                description:
+                  type: string
+                due_date:
+                  type: string
+                  format: date-time
+                priority:
+                  type: string
+                  enum: [low, medium, high]
+                  default: medium
+      responses:
+        '201':
+          description: Task created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+
+  /tasks/{task_id}:
+    patch:
+      tags:
+        - tasks
+      summary: Update task
+      operationId: updateTask
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                due_date:
+                  type: string
+                  format: date-time
+                priority:
+                  type: string
+                  enum: [low, medium, high]
+                is_completed:
+                  type: boolean
+      responses:
+        '200':
+          description: Task updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+
+    delete:
+      tags:
+        - tasks
+      summary: Delete task
+      operationId: deleteTask
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Task deleted
+
+  /search:
+    get:
+      tags:
+        - search
+      summary: Full-text search across notes
+      operationId: searchNotes
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        course_id:
+                          type: integer
+                        course_name:
+                          type: string
+                        title:
+                          type: string
+                        snippet:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        rank:
+                          type: number
+                  total:
+                    type: integer
+                  query:
+                    type: string
+
+  /sync:
+    post:
+      tags:
+        - sync
+      summary: Sync offline changes
+      operationId: syncChanges
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - changes
+                - last_sync_at
+              properties:
+                changes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum: [note, task, course]
+                      action:
+                        type: string
+                        enum: [create, update, delete]
+                      id:
+                        type: integer
+                      data:
+                        type: object
+                last_sync_at:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: Sync complete
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  applied:
+                    type: integer
+                  conflicts:
+                    type: array
+                    items:
+                      type: object
+                  server_changes:
+                    type: array
+                    items:
+                      type: object
+                  new_sync_timestamp:
+                    type: string
+                    format: date-time
+
+  components:
+    responses:
+      Unauthorized:
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+      BadRequest:
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+      NotFound:
+        description: Not Found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
