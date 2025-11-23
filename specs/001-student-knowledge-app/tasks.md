@@ -72,26 +72,26 @@ Polish (Phase 10)
 
 ### Project Structure
 
-- [ ] T001 Initialize Python project with uv in `backend/` directory
-- [ ] T002 Create directory structure per plan.md (backend/src/study_helper/, backend/tests/)
-- [ ] T003 Create directory structure for frontend (frontend/src/, frontend/src/js/, frontend/src/css/)
-- [ ] T004 Configure pyproject.toml with FastAPI, SQLAlchemy, Pydantic, pytest dependencies
-- [ ] T005 [P] Create .env file with DATABASE_URL and SECRET_KEY configuration
-- [ ] T006 [P] Create .gitignore for Python, Node, SQLite, env files
+- [x] T001 Initialize Python project with uv in `backend/` directory
+- [x] T002 Create directory structure per plan.md (backend/src/study_helper/, backend/tests/)
+- [x] T003 Create directory structure for frontend (frontend/src/, frontend/src/js/, frontend/src/css/)
+- [x] T004 Configure pyproject.toml with FastAPI, SQLAlchemy, Pydantic, pytest dependencies
+- [x] T005 [P] Create .env file with DATABASE_URL and SECRET_KEY configuration
+- [x] T006 [P] Create .gitignore for Python, Node, SQLite, env files
 
 ### Database Configuration
 
-- [ ] T007 Create backend/src/study_helper/core/config.py with Pydantic Settings
-- [ ] T008 Create backend/src/study_helper/db/base.py with SQLAlchemy async engine setup
-- [ ] T009 Initialize Alembic with `alembic init migrations` in backend/
-- [ ] T010 Configure alembic.ini with SQLite database URL
-- [ ] T011 Update migrations/env.py to import Base metadata from db/base.py
+- [x] T007 Create backend/src/study_helper/core/config.py with Pydantic Settings
+- [x] T008 Create backend/src/study_helper/db/base.py with SQLAlchemy async engine setup
+- [x] T009 Initialize Alembic with `alembic init migrations` in backend/
+- [x] T010 Configure alembic.ini with SQLite database URL
+- [x] T011 Update migrations/env.py to import Base metadata from db/base.py
 
 ### Verification
 
-- [ ] T012 Verify `uv run python --version` shows Python 3.14+
-- [ ] T013 Verify `uv run alembic current` runs without errors
-- [ ] T014 Create backend/README.md with quickstart instructions
+- [x] T012 Verify `uv run python --version` shows Python 3.14+
+- [x] T013 Verify `uv run alembic current` runs without errors
+- [x] T014 Create backend/README.md with quickstart instructions
 
 **Success Criteria**: Project structure exists, dependencies installed, Alembic initialized
 
@@ -106,52 +106,52 @@ Polish (Phase 10)
 ### User Model & Auth (Blocks All User Stories)
 
 **Test Setup**:
-- [ ] T015 Create backend/tests/conftest.py with pytest fixtures (async client, test database)
-- [ ] T016 Create backend/tests/unit/test_models.py file structure
+- [x] T015 Create backend/tests/conftest.py with pytest fixtures (async client, test database)
+- [x] T016 Create backend/tests/unit/test_models.py file structure
 
 **TDD: User Model**:
-- [ ] T017 **[RED]** Write test_user_creation() verifying User model with email uniqueness
-- [ ] T018 **[RED]** Write test_user_email_index() verifying email index exists for login performance
-- [ ] T019 **[GREEN]** Create backend/src/study_helper/models/user.py with User model per data-model.md § 2.1
-- [ ] T020 **[GREEN]** Run migration: `alembic revision --autogenerate -m "Add User model"`
-- [ ] T021 **[GREEN]** Apply migration: `alembic upgrade head`
-- [ ] T022 **[GREEN]** Verify tests pass with `uv run pytest tests/unit/test_models.py::test_user_creation`
-- [ ] T023 **[REFACTOR]** Add type hints validation with mypy, ensure all Mapped[T] types correct
+- [x] T017 **[RED]** Write test_user_creation() verifying User model with email uniqueness
+- [x] T018 **[RED]** Write test_user_email_index() verifying email index exists for login performance
+- [x] T019 **[GREEN]** Create backend/src/study_helper/models/user.py with User model per data-model.md § 2.1
+- [x] T020 **[GREEN]** Run migration: `alembic revision --autogenerate -m "Add User model"`
+- [x] T021 **[GREEN]** Apply migration: `alembic upgrade head`
+- [x] T022 **[GREEN]** Verify tests pass with `uv run pytest tests/unit/test_models.py::test_user_creation`
+- [x] T023 **[REFACTOR]** Add type hints validation with mypy, ensure all Mapped[T] types correct
 
 **TDD: Auth Security**:
-- [ ] T024 **[RED]** Create backend/tests/unit/test_security.py with test_hash_password() and test_verify_password()
-- [ ] T025 **[GREEN]** Create backend/src/study_helper/core/security.py with bcrypt password hashing
-- [ ] T026 **[GREEN]** Implement create_access_token() with JWT encoding (24hr expiration)
-- [ ] T027 **[REFACTOR]** Extract SECRET_KEY to config.py, use settings.SECRET_KEY
+- [x] T024 **[RED]** Create backend/tests/unit/test_security.py with test_hash_password() and test_verify_password()
+- [x] T025 **[GREEN]** Create backend/src/study_helper/core/security.py with bcrypt password hashing
+- [x] T026 **[GREEN]** Implement create_access_token() with JWT encoding (24hr expiration)
+- [x] T027 **[REFACTOR]** Extract SECRET_KEY to config.py, use settings.SECRET_KEY
 
 **TDD: User Schemas**:
-- [ ] T028 **[RED]** Create backend/tests/unit/test_schemas.py with test_user_register_validation()
-- [ ] T029 **[GREEN]** Create backend/src/study_helper/schemas/user.py with UserRegister schema (email, password, full_name)
-- [ ] T030 **[GREEN]** Create UserResponse schema (id, email, full_name, created_at - NO password)
-- [ ] T031 **[GREEN]** Create UserLogin schema (email, password)
-- [ ] T032 **[GREEN]** Create TokenResponse schema (access_token, token_type, user)
-- [ ] T033 **[REFACTOR]** Add Pydantic validators for email format and password min length (8 chars)
+- [x] T028 **[RED]** Create backend/tests/unit/test_schemas.py with test_user_register_validation()
+- [x] T029 **[GREEN]** Create backend/src/study_helper/schemas/user.py with UserRegister schema (email, password, full_name)
+- [x] T030 **[GREEN]** Create UserResponse schema (id, email, full_name, created_at - NO password)
+- [x] T031 **[GREEN]** Create UserLogin schema (email, password)
+- [x] T032 **[GREEN]** Create TokenResponse schema (access_token, token_type, user)
+- [x] T033 **[REFACTOR]** Add Pydantic validators for email format and password min length (8 chars)
 
 **TDD: Auth Service**:
-- [ ] T034 **[RED]** Create backend/tests/integration/test_auth_service.py with test_register_user_success()
-- [ ] T035 **[RED]** Write test_register_duplicate_email_fails() expecting IntegrityError
-- [ ] T036 **[RED]** Write test_authenticate_user_valid_credentials()
-- [ ] T037 **[RED]** Write test_authenticate_user_invalid_password_returns_none()
-- [ ] T038 **[GREEN]** Create backend/src/study_helper/services/auth.py with register_user() function
-- [ ] T039 **[GREEN]** Implement authenticate_user() function (verify email + password, return User or None)
-- [ ] T040 **[REFACTOR]** Extract database session management to async context manager
+- [x] T034 **[RED]** Create backend/tests/integration/test_auth_service.py with test_register_user_success()
+- [x] T035 **[RED]** Write test_register_duplicate_email_fails() expecting IntegrityError
+- [x] T036 **[RED]** Write test_authenticate_user_valid_credentials()
+- [x] T037 **[RED]** Write test_authenticate_user_invalid_password_returns_none()
+- [x] T038 **[GREEN]** Create backend/src/study_helper/services/auth.py with register_user() function
+- [x] T039 **[GREEN]** Implement authenticate_user() function (verify email + password, return User or None)
+- [x] T040 **[REFACTOR]** Extract database session management to async context manager
 
 **TDD: Auth API**:
-- [ ] T041 **[RED]** Create backend/tests/contract/test_auth_api.py with test_register_success()
-- [ ] T042 **[RED]** Write test_register_duplicate_email_returns_409()
-- [ ] T043 **[RED]** Write test_login_success_returns_token()
-- [ ] T044 **[RED]** Write test_login_invalid_credentials_returns_401()
-- [ ] T045 **[GREEN]** Create backend/src/study_helper/api/deps.py with get_db() dependency
-- [ ] T046 **[GREEN]** Implement get_current_user() dependency (decode JWT, return User)
-- [ ] T047 **[GREEN]** Create backend/src/study_helper/api/auth.py with POST /api/v1/auth/register endpoint
-- [ ] T048 **[GREEN]** Implement POST /api/v1/auth/login endpoint (return TokenResponse)
-- [ ] T049 **[GREEN]** Update backend/src/study_helper/main.py to include auth router
-- [ ] T050 **[REFACTOR]** Add error handling for 400 (invalid input), 401 (unauthorized), 409 (conflict)
+- [x] T041 **[RED]** Create backend/tests/contract/test_auth_api.py with test_register_success()
+- [x] T042 **[RED]** Write test_register_duplicate_email_returns_409()
+- [x] T043 **[RED]** Write test_login_success_returns_token()
+- [x] T044 **[RED]** Write test_login_invalid_credentials_returns_401()
+- [x] T045 **[GREEN]** Create backend/src/study_helper/api/deps.py with get_db() dependency
+- [x] T046 **[GREEN]** Implement get_current_user() dependency (decode JWT, return User)
+- [x] T047 **[GREEN]** Create backend/src/study_helper/api/auth.py with POST /api/v1/auth/register endpoint
+- [x] T048 **[GREEN]** Implement POST /api/v1/auth/login endpoint (return TokenResponse)
+- [x] T049 **[GREEN]** Update backend/src/study_helper/main.py to include auth router
+- [x] T050 **[REFACTOR]** Add error handling for 400 (invalid input), 401 (unauthorized), 409 (conflict)
 
 **Success Criteria**: 
 - ✅ 100% test coverage for auth endpoints (constitution requirement)
@@ -169,144 +169,144 @@ Polish (Phase 10)
 ### Course Entity (US1)
 
 **TDD: Course Model**:
-- [ ] T051 [US1] **[RED]** Write test_course_creation() in backend/tests/unit/test_models.py
-- [ ] T052 [US1] **[RED]** Write test_course_cascade_delete() verifying notes and tasks are deleted (Clarification #1)
-- [ ] T053 [US1] **[GREEN]** Create backend/src/study_helper/models/course.py per data-model.md § 2.2
-- [ ] T054 [US1] **[GREEN]** Add composite index (user_id, is_archived) for filtering active courses
-- [ ] T055 [US1] **[GREEN]** Run migration: `alembic revision --autogenerate -m "Add Course model"`
-- [ ] T056 [US1] **[REFACTOR]** Verify cascade="all, delete-orphan" on notes and tasks relationships
+- [x] T051 [US1] **[RED]** Write test_course_creation() in backend/tests/unit/test_models.py
+- [x] T052 [US1] **[RED]** Write test_course_cascade_delete() verifying notes and tasks are deleted (Clarification #1)
+- [x] T053 [US1] **[GREEN]** Create backend/src/study_helper/models/course.py per data-model.md § 2.2
+- [x] T054 [US1] **[GREEN]** Add composite index (user_id, is_archived) for filtering active courses
+- [x] T055 [US1] **[GREEN]** Run migration: `alembic revision --autogenerate -m "Add Course model"`
+- [x] T056 [US1] **[REFACTOR]** Verify cascade="all, delete-orphan" on notes and tasks relationships
 
 **TDD: Course Schemas**:
-- [ ] T057 [P] [US1] **[RED]** Write test_course_create_valid_color() in backend/tests/unit/test_schemas.py
-- [ ] T058 [P] [US1] **[RED]** Write test_course_create_invalid_color_fails() expecting ValidationError
-- [ ] T059 [P] [US1] **[GREEN]** Create backend/src/study_helper/schemas/course.py with CourseCreate schema
-- [ ] T060 [P] [US1] **[GREEN]** Add color field with regex pattern ^#[0-9A-Fa-f]{6}$ and default "#3B82F6"
-- [ ] T061 [P] [US1] **[GREEN]** Create CourseUpdate schema (all fields optional including is_archived)
-- [ ] T062 [P] [US1] **[GREEN]** Create CourseResponse schema with notes_count and tasks_count fields
-- [ ] T063 [P] [US1] **[REFACTOR]** Add Field validators for name max 200 chars, description max 2000 chars
+- [x] T057 [P] [US1] **[RED]** Write test_course_create_valid_color() in backend/tests/unit/test_schemas.py
+- [x] T058 [P] [US1] **[RED]** Write test_course_create_invalid_color_fails() expecting ValidationError
+- [x] T059 [P] [US1] **[GREEN]** Create backend/src/study_helper/schemas/course.py with CourseCreate schema
+- [x] T060 [P] [US1] **[GREEN]** Add color field with regex pattern ^#[0-9A-Fa-f]{6}$ and default "#3B82F6"
+- [x] T061 [P] [US1] **[GREEN]** Create CourseUpdate schema (all fields optional including is_archived)
+- [x] T062 [P] [US1] **[GREEN]** Create CourseResponse schema with notes_count and tasks_count fields
+- [x] T063 [P] [US1] **[REFACTOR]** Add Field validators for name max 200 chars, description max 2000 chars
 
 **TDD: Course Service**:
-- [ ] T064 [US1] **[RED]** Create backend/tests/integration/test_course_service.py with test_create_course()
-- [ ] T065 [US1] **[RED]** Write test_get_courses_filtered_by_archived_status()
-- [ ] T066 [US1] **[RED]** Write test_update_course_archives_successfully()
-- [ ] T067 [US1] **[RED]** Write test_delete_course_cascades_to_notes_and_tasks() (critical business rule)
-- [ ] T068 [US1] **[GREEN]** Create backend/src/study_helper/services/course.py with create_course() function
-- [ ] T069 [US1] **[GREEN]** Implement get_courses(user_id, is_archived) with filtering
-- [ ] T070 [US1] **[GREEN]** Implement update_course() with ownership verification (user_id check)
-- [ ] T071 [US1] **[GREEN]** Implement delete_course() with cascade delete confirmation
-- [ ] T072 [US1] **[REFACTOR]** Add error handling for ForbiddenError (user doesn't own course)
+- [x] T064 [US1] **[RED]** Create backend/tests/integration/test_course_service.py with test_create_course()
+- [x] T065 [US1] **[RED]** Write test_get_courses_filtered_by_archived_status()
+- [x] T066 [US1] **[RED]** Write test_update_course_archives_successfully()
+- [x] T067 [US1] **[RED]** Write test_delete_course_cascades_to_notes_and_tasks() (critical business rule)
+- [x] T068 [US1] **[GREEN]** Create backend/src/study_helper/services/course.py with create_course() function
+- [x] T069 [US1] **[GREEN]** Implement get_courses(user_id, is_archived) with filtering
+- [x] T070 [US1] **[GREEN]** Implement update_course() with ownership verification (user_id check)
+- [x] T071 [US1] **[GREEN]** Implement delete_course() with cascade delete confirmation
+- [x] T072 [US1] **[REFACTOR]** Add error handling for ForbiddenError (user doesn't own course)
 
 **TDD: Course API**:
-- [ ] T073 [US1] **[RED]** Create backend/tests/contract/test_courses_api.py with test_create_course_success()
-- [ ] T074 [US1] **[RED]** Write test_get_courses_requires_authentication()
-- [ ] T075 [US1] **[RED]** Write test_update_course_forbidden_if_not_owner()
-- [ ] T076 [US1] **[RED]** Write test_delete_course_returns_204()
-- [ ] T077 [US1] **[GREEN]** Create backend/src/study_helper/api/courses.py with POST /api/v1/courses endpoint
-- [ ] T078 [US1] **[GREEN]** Implement GET /api/v1/courses with is_archived query parameter
-- [ ] T079 [US1] **[GREEN]** Implement PATCH /api/v1/courses/{course_id} endpoint
-- [ ] T080 [US1] **[GREEN]** Implement DELETE /api/v1/courses/{course_id} endpoint
-- [ ] T081 [US1] **[GREEN]** Add courses router to main.py with /api/v1 prefix
-- [ ] T082 [US1] **[REFACTOR]** Add response models to all endpoints (CourseResponse, List[CourseResponse])
+- [x] T073 [US1] **[RED]** Create backend/tests/contract/test_courses_api.py with test_create_course_success()
+- [x] T074 [US1] **[RED]** Write test_get_courses_requires_authentication()
+- [x] T075 [US1] **[RED]** Write test_update_course_forbidden_if_not_owner()
+- [x] T076 [US1] **[RED]** Write test_delete_course_returns_204()
+- [x] T077 [US1] **[GREEN]** Create backend/src/study_helper/api/courses.py with POST /api/v1/courses endpoint
+- [x] T078 [US1] **[GREEN]** Implement GET /api/v1/courses with is_archived query parameter
+- [x] T079 [US1] **[GREEN]** Implement PATCH /api/v1/courses/{course_id} endpoint
+- [x] T080 [US1] **[GREEN]** Implement DELETE /api/v1/courses/{course_id} endpoint
+- [x] T081 [US1] **[GREEN]** Add courses router to main.py with /api/v1 prefix
+- [x] T082 [US1] **[REFACTOR]** Add response models to all endpoints (CourseResponse, List[CourseResponse])
 
 ### Note Entity (US1)
 
 **TDD: Note Model**:
-- [ ] T083 [P] [US1] **[RED]** Write test_note_creation() in backend/tests/unit/test_models.py
-- [ ] T084 [P] [US1] **[RED]** Write test_note_composite_index_course_created() for sorting performance
-- [ ] T085 [P] [US1] **[GREEN]** Create backend/src/study_helper/models/note.py per data-model.md § 2.3
-- [ ] T086 [P] [US1] **[GREEN]** Add composite index (course_id, created_at) for FR-016 sorting requirement
-- [ ] T087 [P] [US1] **[GREEN]** Add relationship to NoteTaskLink (defer to US3 for M:N implementation)
-- [ ] T088 [P] [US1] **[GREEN]** Run migration: `alembic revision --autogenerate -m "Add Note model"`
+- [x] T083 [P] [US1] **[RED]** Write test_note_creation() in backend/tests/unit/test_models.py
+- [x] T084 [P] [US1] **[RED]** Write test_note_composite_index_course_created() for sorting performance
+- [x] T085 [P] [US1] **[GREEN]** Create backend/src/study_helper/models/note.py per data-model.md § 2.3
+- [x] T086 [P] [US1] **[GREEN]** Add composite index (course_id, created_at) for FR-016 sorting requirement
+- [x] T087 [P] [US1] **[GREEN]** Add relationship to NoteTaskLink (defer to US3 for M:N implementation)
+- [x] T088 [P] [US1] **[GREEN]** Run migration: `alembic revision --autogenerate -m "Add Note model"`
 
 **TDD: Note Schemas**:
-- [ ] T089 [P] [US1] **[RED]** Write test_note_create_validation() verifying title and content required
-- [ ] T090 [P] [US1] **[RED]** Write test_note_title_max_length_300() expecting ValidationError if exceeded
-- [ ] T091 [P] [US1] **[RED]** Write test_note_content_max_length_50000() for large note limit
-- [ ] T092 [P] [US1] **[GREEN]** Create backend/src/study_helper/schemas/note.py with NoteCreate schema
-- [ ] T093 [P] [US1] **[GREEN]** Add validation: title max 300 chars, content max 50,000 chars
-- [ ] T094 [P] [US1] **[GREEN]** Create NoteUpdate schema (title, content, tags all optional)
-- [ ] T095 [P] [US1] **[GREEN]** Create NoteResponse schema with linked_tasks list (empty for now, populate in US3)
+- [x] T089 [P] [US1] **[RED]** Write test_note_create_validation() verifying title and content required
+- [x] T090 [P] [US1] **[RED]** Write test_note_title_max_length_300() expecting ValidationError if exceeded
+- [x] T091 [P] [US1] **[RED]** Write test_note_content_max_length_50000() for large note limit
+- [x] T092 [P] [US1] **[GREEN]** Create backend/src/study_helper/schemas/note.py with NoteCreate schema
+- [x] T093 [P] [US1] **[GREEN]** Add validation: title max 300 chars, content max 50,000 chars
+- [x] T094 [P] [US1] **[GREEN]** Create NoteUpdate schema (title, content, tags all optional)
+- [x] T095 [P] [US1] **[GREEN]** Create NoteResponse schema with linked_tasks list (empty for now, populate in US3)
 
 **TDD: Note Service**:
-- [ ] T096 [US1] **[RED]** Create backend/tests/integration/test_note_service.py with test_create_note()
-- [ ] T097 [US1] **[RED]** Write test_get_notes_by_course_sorted_newest_first() (FR-016 default sort)
-- [ ] T098 [US1] **[RED]** Write test_update_note_updates_updated_at_timestamp()
-- [ ] T099 [US1] **[RED]** Write test_delete_note_succeeds()
-- [ ] T100 [US1] **[GREEN]** Create backend/src/study_helper/services/note.py with create_note() function
-- [ ] T101 [US1] **[GREEN]** Implement get_notes_by_course(course_id, sort_by, order) with default order=desc
-- [ ] T102 [US1] **[GREEN]** Implement update_note() with timestamp update
-- [ ] T103 [US1] **[GREEN]** Implement delete_note() (removes note-task links but keeps tasks)
-- [ ] T104 [US1] **[REFACTOR]** Add pagination support (limit 50 default) for note lists
+- [x] T096 [US1] **[RED]** Create backend/tests/integration/test_note_service.py with test_create_note()
+- [x] T097 [US1] **[RED]** Write test_get_notes_by_course_sorted_newest_first() (FR-016 default sort)
+- [x] T098 [US1] **[RED]** Write test_update_note_updates_updated_at_timestamp()
+- [x] T099 [US1] **[RED]** Write test_delete_note_succeeds()
+- [x] T100 [US1] **[GREEN]** Create backend/src/study_helper/services/note.py with create_note() function
+- [x] T101 [US1] **[GREEN]** Implement get_notes_by_course(course_id, sort_by, order) with default order=desc
+- [x] T102 [US1] **[GREEN]** Implement update_note() with timestamp update
+- [x] T103 [US1] **[GREEN]** Implement delete_note() (removes note-task links but keeps tasks)
+- [x] T104 [US1] **[REFACTOR]** Add pagination support (limit 50 default) for note lists
 
 **TDD: Note API**:
-- [ ] T105 [US1] **[RED]** Create backend/tests/contract/test_notes_api.py with test_create_note_success()
-- [ ] T106 [US1] **[RED]** Write test_get_notes_by_course_filters_correctly()
-- [ ] T107 [US1] **[RED]** Write test_update_note_returns_updated_data()
-- [ ] T108 [US1] **[RED]** Write test_delete_note_returns_204()
-- [ ] T109 [US1] **[GREEN]** Create backend/src/study_helper/api/notes.py with POST /api/v1/notes endpoint
-- [ ] T110 [US1] **[GREEN]** Implement GET /api/v1/courses/{course_id}/notes with sort_by and order params
-- [ ] T111 [US1] **[GREEN]** Implement PATCH /api/v1/notes/{note_id} endpoint
-- [ ] T112 [US1] **[GREEN]** Implement DELETE /api/v1/notes/{note_id} endpoint
-- [ ] T113 [US1] **[GREEN]** Add notes router to main.py
+- [x] T105 [US1] **[RED]** Create backend/tests/contract/test_notes_api.py with test_create_note_success()
+- [x] T106 [US1] **[RED]** Write test_get_notes_by_course_filters_correctly()
+- [x] T107 [US1] **[RED]** Write test_update_note_returns_updated_data()
+- [x] T108 [US1] **[RED]** Write test_delete_note_returns_204()
+- [x] T109 [US1] **[GREEN]** Create backend/src/study_helper/api/notes.py with POST /api/v1/notes endpoint
+- [x] T110 [US1] **[GREEN]** Implement GET /api/v1/courses/{course_id}/notes with sort_by and order params
+- [x] T111 [US1] **[GREEN]** Implement PATCH /api/v1/notes/{note_id} endpoint
+- [x] T112 [US1] **[GREEN]** Implement DELETE /api/v1/notes/{note_id} endpoint
+- [x] T113 [US1] **[GREEN]** Add notes router to main.py
 - [ ] T114 [US1] **[REFACTOR]** Verify <200ms P95 latency with pytest-benchmark
 
 ### Task Entity (US1)
 
 **TDD: Task Model**:
-- [ ] T115 [P] [US1] **[RED]** Write test_task_creation() in backend/tests/unit/test_models.py
-- [ ] T116 [P] [US1] **[RED]** Write test_task_auto_title_generation() for empty title (Clarification #5)
-- [ ] T117 [P] [US1] **[RED]** Write test_task_completed_at_set_when_is_completed_true()
-- [ ] T118 [P] [US1] **[GREEN]** Create backend/src/study_helper/models/task.py per data-model.md § 2.4
-- [ ] T119 [P] [US1] **[GREEN]** Add TaskPriority enum (low, medium, high)
-- [ ] T120 [P] [US1] **[GREEN]** Add self-referential parent_task_id foreign key (for US4 subtasks)
-- [ ] T121 [P] [US1] **[GREEN]** Add composite indexes (course_id, due_date) and (course_id, created_at)
-- [ ] T122 [P] [US1] **[GREEN]** Run migration: `alembic revision --autogenerate -m "Add Task model"`
+- [x] T115 [P] [US1] **[RED]** Write test_task_creation() in backend/tests/unit/test_models.py
+- [x] T116 [P] [US1] **[RED]** Write test_task_auto_title_generation() for empty title (Clarification #5)
+- [x] T117 [P] [US1] **[RED]** Write test_task_completed_at_set_when_is_completed_true()
+- [x] T118 [P] [US1] **[GREEN]** Create backend/src/study_helper/models/task.py per data-model.md § 2.4
+- [x] T119 [P] [US1] **[GREEN]** Add TaskPriority enum (low, medium, high)
+- [x] T120 [P] [US1] **[GREEN]** Add self-referential parent_task_id foreign key (for US4 subtasks)
+- [x] T121 [P] [US1] **[GREEN]** Add composite indexes (course_id, due_date) and (course_id, created_at)
+- [x] T122 [P] [US1] **[GREEN]** Run migration: `alembic revision --autogenerate -m "Add Task model"`
 
 **TDD: Task Schemas**:
-- [ ] T123 [P] [US1] **[RED]** Write test_task_create_with_empty_title_generates_placeholder()
-- [ ] T124 [P] [US1] **[RED]** Write test_task_priority_validation() ensuring only low/medium/high allowed
-- [ ] T125 [P] [US1] **[GREEN]** Create backend/src/study_helper/schemas/task.py with TaskCreate schema
-- [ ] T126 [P] [US1] **[GREEN]** Implement auto-title logic: if title empty, generate "Untitled Task - {timestamp}"
-- [ ] T127 [P] [US1] **[GREEN]** Create TaskUpdate schema (all fields optional + is_completed)
-- [ ] T128 [P] [US1] **[GREEN]** Create TaskResponse schema with subtasks array and linked_notes_count
+- [x] T123 [P] [US1] **[RED]** Write test_task_create_with_empty_title_generates_placeholder()
+- [x] T124 [P] [US1] **[RED]** Write test_task_priority_validation() ensuring only low/medium/high allowed
+- [x] T125 [P] [US1] **[GREEN]** Create backend/src/study_helper/schemas/task.py with TaskCreate schema
+- [x] T126 [P] [US1] **[GREEN]** Implement auto-title logic: if title empty, generate "Untitled Task - {timestamp}"
+- [x] T127 [P] [US1] **[GREEN]** Create TaskUpdate schema (all fields optional + is_completed)
+- [x] T128 [P] [US1] **[GREEN]** Create TaskResponse schema with subtasks array and linked_notes_count
 
 **TDD: Task Service**:
-- [ ] T129 [US1] **[RED]** Create backend/tests/integration/test_task_service.py with test_create_task()
-- [ ] T130 [US1] **[RED]** Write test_get_tasks_by_course_sorted_oldest_first() (FR-029 default sort)
-- [ ] T131 [US1] **[RED]** Write test_mark_task_complete_sets_completed_at()
-- [ ] T132 [US1] **[RED]** Write test_delete_task_succeeds()
-- [ ] T133 [US1] **[GREEN]** Create backend/src/study_helper/services/task.py with create_task() function
-- [ ] T134 [US1] **[GREEN]** Implement get_tasks_by_course(course_id, completed, sort_by) with created_at asc default
-- [ ] T135 [US1] **[GREEN]** Implement update_task() with completed_at timestamp logic
-- [ ] T136 [US1] **[GREEN]** Implement delete_task() (defer subtask promotion to US4)
-- [ ] T137 [US1] **[REFACTOR]** Add validation for due_date must be future date when set
+- [x] T129 [US1] **[RED]** Create backend/tests/integration/test_task_service.py with test_create_task()
+- [x] T130 [US1] **[RED]** Write test_get_tasks_by_course_sorted_oldest_first() (FR-029 default sort)
+- [x] T131 [US1] **[RED]** Write test_mark_task_complete_sets_completed_at()
+- [x] T132 [US1] **[RED]** Write test_delete_task_succeeds()
+- [x] T133 [US1] **[GREEN]** Create backend/src/study_helper/services/task.py with create_task() function
+- [x] T134 [US1] **[GREEN]** Implement get_tasks_by_course(course_id, completed, sort_by) with created_at asc default
+- [x] T135 [US1] **[GREEN]** Implement update_task() with completed_at timestamp logic
+- [x] T136 [US1] **[GREEN]** Implement delete_task() (defer subtask promotion to US4)
+- [x] T137 [US1] **[REFACTOR]** Add validation for due_date must be future date when set
 
 **TDD: Task API**:
-- [ ] T138 [US1] **[RED]** Create backend/tests/contract/test_tasks_api.py with test_create_task_success()
-- [ ] T139 [US1] **[RED]** Write test_get_tasks_by_course_returns_correct_tasks()
-- [ ] T140 [US1] **[RED]** Write test_mark_task_complete_via_patch()
-- [ ] T141 [US1] **[RED]** Write test_delete_task_returns_204()
-- [ ] T142 [US1] **[GREEN]** Create backend/src/study_helper/api/tasks.py with POST /api/v1/tasks endpoint
-- [ ] T143 [US1] **[GREEN]** Implement GET /api/v1/courses/{course_id}/tasks with completed and sort_by params
-- [ ] T144 [US1] **[GREEN]** Implement PATCH /api/v1/tasks/{task_id} endpoint
-- [ ] T145 [US1] **[GREEN]** Implement DELETE /api/v1/tasks/{task_id} endpoint
-- [ ] T146 [US1] **[GREEN]** Add tasks router to main.py
+- [x] T138 [US1] **[RED]** Create backend/tests/contract/test_tasks_api.py with test_create_task_success()
+- [x] T139 [US1] **[RED]** Write test_get_tasks_by_course_returns_correct_tasks()
+- [x] T140 [US1] **[RED]** Write test_mark_task_complete_via_patch()
+- [x] T141 [US1] **[RED]** Write test_delete_task_returns_204()
+- [x] T142 [US1] **[GREEN]** Create backend/src/study_helper/api/tasks.py with POST /api/v1/tasks endpoint
+- [x] T143 [US1] **[GREEN]** Implement GET /api/v1/courses/{course_id}/tasks with completed and sort_by params
+- [x] T144 [US1] **[GREEN]** Implement PATCH /api/v1/tasks/{task_id} endpoint
+- [x] T145 [US1] **[GREEN]** Implement DELETE /api/v1/tasks/{task_id} endpoint
+- [x] T146 [US1] **[GREEN]** Add tasks router to main.py
 
 ### Frontend (US1 - Basic UI)
 
-- [ ] T147 [P] [US1] Create frontend/src/index.html with semantic HTML5 structure
-- [ ] T148 [P] [US1] Create frontend/src/css/main.css with Tailwind CDN link
-- [ ] T149 [P] [US1] Create frontend/src/js/api/client.js with base HTTP client and JWT token injection
-- [ ] T150 [P] [US1] Create frontend/src/js/api/auth.js with register() and login() functions
-- [ ] T151 [P] [US1] Create frontend/src/js/api/courses.js with CRUD functions for courses
-- [ ] T152 [P] [US1] Create frontend/src/js/api/notes.js with CRUD functions for notes
-- [ ] T153 [P] [US1] Create frontend/src/js/api/tasks.js with CRUD functions for tasks
-- [ ] T154 [US1] Create frontend/src/js/components/course-list.js rendering courses with create/archive UI
-- [ ] T155 [US1] Create frontend/src/js/components/note-editor.js with contenteditable and Markdown storage
-- [ ] T156 [US1] Create frontend/src/js/components/task-list.js with task CRUD and completion toggle
-- [ ] T157 [US1] Create frontend/src/js/main.js with app initialization and auth check
-- [ ] T158 [US1] Add LocalStorage for offline queue (queue failed API requests)
-- [ ] T159 [US1] Verify <2s page load and <100ms UI interactions with Chrome DevTools
+- [X] T147 [P] [US1] Create frontend/src/index.html with semantic HTML5 structure
+- [X] T148 [P] [US1] Create frontend/src/css/main.css with Tailwind CDN link
+- [X] T149 [P] [US1] Create frontend/src/js/api/client.js with base HTTP client and JWT token injection
+- [X] T150 [P] [US1] Create frontend/src/js/api/auth.js with register() and login() functions
+- [X] T151 [P] [US1] Create frontend/src/js/api/courses.js with CRUD functions for courses
+- [X] T152 [P] [US1] Create frontend/src/js/api/notes.js with CRUD functions for notes
+- [X] T153 [P] [US1] Create frontend/src/js/api/tasks.js with CRUD functions for tasks
+- [X] T154 [US1] Create frontend/src/js/components/course-list.js rendering courses with create/archive UI
+- [X] T155 [US1] Create frontend/src/js/components/note-editor.js with contenteditable and Markdown storage
+- [X] T156 [US1] Create frontend/src/js/components/task-list.js with task CRUD and completion toggle
+- [X] T157 [US1] Create frontend/src/js/main.js with app initialization and auth check
+- [X] T158 [US1] Add LocalStorage for offline queue (queue failed API requests)
+- [X] T159 [US1] Verify <2s page load and <100ms UI interactions with Chrome DevTools
 
 **US1 Success Criteria**:
 - ✅ Users can register and login
@@ -327,45 +327,45 @@ Polish (Phase 10)
 ### Date Filtering Utilities (US2)
 
 **TDD: Date Filters**:
-- [ ] T160 [P] [US2] **[RED]** Create backend/tests/unit/test_date_filters.py with test_is_today()
-- [ ] T161 [P] [US2] **[RED]** Write test_is_this_week_includes_today() (Clarification #4)
-- [ ] T162 [P] [US2] **[RED]** Write test_is_upcoming_beyond_7_days()
-- [ ] T163 [P] [US2] **[GREEN]** Create backend/src/study_helper/utils/date_filters.py with is_today() function
-- [ ] T164 [P] [US2] **[GREEN]** Implement is_this_week() returning true for today through next 7 days
-- [ ] T165 [P] [US2] **[GREEN]** Implement is_upcoming() returning true for beyond this week
-- [ ] T166 [P] [US2] **[REFACTOR]** Add timezone handling (use UTC for consistency)
+- [X] T160 [P] [US2] **[RED]** Create backend/tests/unit/test_date_filters.py with test_is_today()
+- [X] T161 [P] [US2] **[RED]** Write test_is_this_week_includes_today() (Clarification #4)
+- [X] T162 [P] [US2] **[RED]** Write test_is_upcoming_beyond_7_days()
+- [X] T163 [P] [US2] **[GREEN]** Create backend/src/study_helper/utils/date_filters.py with is_today() function
+- [X] T164 [P] [US2] **[GREEN]** Implement is_this_week() returning true for today through next 7 days
+- [X] T165 [P] [US2] **[GREEN]** Implement is_upcoming() returning true for beyond this week
+- [X] T166 [P] [US2] **[REFACTOR]** Add timezone handling (use UTC for consistency)
 
 ### Task Service Extension (US2)
 
 **TDD: Time-Based Views**:
-- [ ] T167 [US2] **[RED]** Write test_get_tasks_today_view() in backend/tests/integration/test_task_service.py
-- [ ] T168 [US2] **[RED]** Write test_get_tasks_this_week_view_includes_today()
-- [ ] T169 [US2] **[RED]** Write test_get_tasks_upcoming_view()
-- [ ] T170 [US2] **[RED]** Write test_tasks_without_due_date_appear_in_no_due_date_section()
-- [ ] T171 [US2] **[GREEN]** Extend get_tasks_by_course() with view parameter (all, today, week, upcoming)
-- [ ] T172 [US2] **[GREEN]** Implement filter logic using date_filters.py functions
-- [ ] T173 [US2] **[GREEN]** Add grouping by due_date for "This Week" view
-- [ ] T174 [US2] **[REFACTOR]** Optimize query with indexes on (course_id, due_date)
+- [X] T167 [US2] **[RED]** Write test_get_tasks_today_view() in backend/tests/integration/test_task_service.py
+- [X] T168 [US2] **[RED]** Write test_get_tasks_this_week_view_includes_today()
+- [X] T169 [US2] **[RED]** Write test_get_tasks_upcoming_view()
+- [X] T170 [US2] **[RED]** Write test_tasks_without_due_date_appear_in_no_due_date_section()
+- [X] T171 [US2] **[GREEN]** Extend get_tasks_by_course() with view parameter (all, today, week, upcoming)
+- [X] T172 [US2] **[GREEN]** Implement filter logic using date_filters.py functions
+- [X] T173 [US2] **[GREEN]** Add grouping by due_date for "This Week" view
+- [X] T174 [US2] **[REFACTOR]** Optimize query with indexes on (course_id, due_date)
 
 ### Task API Extension (US2)
 
 **TDD: View Endpoints**:
-- [ ] T175 [US2] **[RED]** Write test_get_tasks_today_view_returns_only_today() in backend/tests/contract/test_tasks_api.py
-- [ ] T176 [US2] **[RED]** Write test_get_tasks_week_view_aggregates_across_courses()
-- [ ] T177 [US2] **[RED]** Write test_get_tasks_upcoming_view_sorted_by_date()
-- [ ] T178 [US2] **[GREEN]** Update GET /api/v1/courses/{course_id}/tasks to accept view=today|week|upcoming
-- [ ] T179 [US2] **[GREEN]** Add GET /api/v1/tasks/today endpoint (all courses, today's tasks)
-- [ ] T180 [US2] **[GREEN]** Add GET /api/v1/tasks/week endpoint (all courses, this week's tasks)
-- [ ] T181 [US2] **[GREEN]** Add GET /api/v1/tasks/upcoming endpoint (all courses, upcoming tasks)
+- [X] T175 [US2] **[RED]** Write test_get_tasks_today_view_returns_only_today() in backend/tests/contract/test_tasks_api.py
+- [X] T176 [US2] **[RED]** Write test_get_tasks_week_view_aggregates_across_courses()
+- [X] T177 [US2] **[RED]** Write test_get_tasks_upcoming_view_sorted_by_date()
+- [X] T178 [US2] **[GREEN]** Update GET /api/v1/courses/{course_id}/tasks to accept view=today|week|upcoming
+- [X] T179 [US2] **[GREEN]** Add GET /api/v1/tasks/today endpoint (all courses, today's tasks)
+- [X] T180 [US2] **[GREEN]** Add GET /api/v1/tasks/week endpoint (all courses, this week's tasks)
+- [X] T181 [US2] **[GREEN]** Add GET /api/v1/tasks/upcoming endpoint (all courses, upcoming tasks)
 
 ### Frontend (US2 - Task Views)
 
-- [ ] T182 [P] [US2] Create frontend/src/js/components/task-views.js with Today/Week/Upcoming tabs
-- [ ] T183 [P] [US2] Implement tab switching logic with active state styling
-- [ ] T184 [P] [US2] Add visual indication for overdue tasks (red text, warning icon)
-- [ ] T185 [P] [US2] Implement "No Due Date" section for tasks without due_date
-- [ ] T186 [US2] Add priority sorting within each date group (high → medium → low)
-- [ ] T187 [US2] Verify <100ms tab switching performance
+- [X] T182 [P] [US2] Create frontend/src/js/components/task-views.js with Today/Week/Upcoming tabs
+- [X] T183 [P] [US2] Implement tab switching logic with active state styling
+- [X] T184 [P] [US2] Add visual indication for overdue tasks (red text, warning icon)
+- [X] T185 [P] [US2] Implement "No Due Date" section for tasks without due_date
+- [X] T186 [US2] Add priority sorting within each date group (high → medium → low)
+- [X] T187 [US2] Verify <100ms tab switching performance
 
 **US2 Success Criteria**:
 - ✅ Today view shows only today's tasks

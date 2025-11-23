@@ -1,0 +1,355 @@
+/* Custom styles for StudyHelper */
+
+:root {
+    --color-primary: #3B82F6;
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-danger: #EF4444;
+}
+
+/* Smooth transitions */
+* {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Course item styling */
+.course-item {
+    cursor: pointer;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid transparent;
+}
+
+.course-item:hover {
+    background-color: #F3F4F6;
+}
+
+.course-item.active {
+    background-color: #EFF6FF;
+    border-left-color: var(--color-primary);
+}
+
+/* Task Views - Tabs (T182-T183) */
+.task-views {
+    width: 100%;
+}
+
+.task-tabs {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 2px solid #E5E7EB;
+    margin-bottom: 1.5rem;
+}
+
+.task-tab {
+    padding: 0.75rem 1.5rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-weight: 500;
+    color: #6B7280;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.15s ease;
+}
+
+.task-tab:hover {
+    color: #374151;
+    background-color: #F9FAFB;
+}
+
+.task-tab.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.task-count {
+    display: inline-block;
+    min-width: 1.5rem;
+    padding: 0.125rem 0.5rem;
+    background-color: #E5E7EB;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.task-tab.active .task-count {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.view-panel {
+    min-height: 300px;
+}
+
+.view-panel.hidden {
+    display: none;
+}
+
+/* Task Groups (T184-T186) */
+.task-group {
+    margin-bottom: 1.5rem;
+}
+
+.task-group-title {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.overdue-group .task-item {
+    border-left: 3px solid var(--color-danger);
+    background-color: #FEF2F2;
+}
+
+.overdue-group .task-title {
+    color: var(--color-danger);
+    font-weight: 600;
+}
+
+.no-due-date-group {
+    opacity: 0.8;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #9CA3AF;
+}
+
+/* Note card */
+.note-card {
+    border: 1px solid #E5E7EB;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.note-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Task item */
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 0.5rem;
+}
+
+.task-item:hover {
+    background-color: #F9FAFB;
+}
+
+.task-item.completed {
+    opacity: 0.6;
+}
+
+.task-item.completed .task-title {
+    text-decoration: line-through;
+}
+
+/* Priority badges */
+.priority-low {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+}
+
+.priority-medium {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.priority-high {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+
+/* Modal animations */
+.modal-enter {
+    animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Loading spinner */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Notification toast */
+.toast {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    max-width: 20rem;
+    z-index: 100;
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.toast-success {
+    border-left: 4px solid var(--color-success);
+}
+
+.toast-error {
+    border-left: 4px solid var(--color-danger);
+}
+
+.toast-warning {
+    border-left: 4px solid var(--color-warning);
+}
+
+/* Form inputs */
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    ring: 2px;
+    ring-color: var(--color-primary);
+}
+
+/* Button hover effects */
+button:active {
+    transform: scale(0.98);
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6B7280;
+}
+
+.empty-state svg {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1rem;
+    opacity: 0.5;
+}
+
+/* Markdown preview styles */
+.markdown-content h1 {
+    font-size: 1.875rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.markdown-content h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+}
+
+.markdown-content h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.markdown-content p {
+    margin-bottom: 1rem;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.markdown-content code {
+    background-color: #F3F4F6;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+    font-size: 0.875rem;
+}
+
+.markdown-content pre {
+    background-color: #1F2937;
+    color: #F9FAFB;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.markdown-content pre code {
+    background-color: transparent;
+    color: inherit;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .course-item {
+        font-size: 0.875rem;
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .task-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .note-card {
+        padding: 0.75rem;
+    }
+}
