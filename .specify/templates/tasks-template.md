@@ -8,7 +8,7 @@ description: "Task list template for feature implementation"
 **Input**: Design documents from `/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Constitution Compliance**: This template enforces Test-First Development (Constitution Principle II). Tests MUST be written and approved before implementation. Each user story phase follows Red-Green-Refactor workflow.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -79,23 +79,55 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
+**Constitution Workflow**: RED → GREEN → REFACTOR (Tests first, then implementation, then optimization)
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+### Tests for User Story 1 (REQUIRED - Write First)
+
+> **⚠️ CRITICAL - TEST-FIRST DEVELOPMENT**: 
+> 1. Write these tests FIRST based on spec.md acceptance criteria
+> 2. Get user/stakeholder approval of test scenarios
+> 3. Run tests - they MUST FAIL (RED phase)
+> 4. Only then proceed to implementation tasks below
+> 5. Implementation makes tests pass (GREEN phase)
+> 6. Refactor for code quality while keeping tests green
 
 - [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
+  - Verify API contract, request/response schemas, error codes
+  - Ensures public interface doesn't break
 - [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+  - Test complete user flow from acceptance scenarios
+  - Multi-component interaction validation
 
-### Implementation for User Story 1
+**Checkpoint - RED Phase**: Tests written, approved, and failing ❌
+
+### Implementation for User Story 1 (Make Tests Pass)
 
 - [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
+  - Include type annotations for all fields (Code Quality: Type Safety)
+  - Single responsibility - one entity per file
 - [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
+  - Include type annotations for all fields (Code Quality: Type Safety)
 - [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
+  - Single responsibility - focused business logic
+  - All error paths explicitly handled with context
 - [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
+  - Type-safe request/response handling
+  - User-facing error messages are actionable
 - [ ] T016 [US1] Add validation and error handling
+  - No silent failures - all errors logged and handled
 - [ ] T017 [US1] Add logging for user story 1 operations
+  - Structured logging for debugging
 
-**Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
+**Checkpoint - GREEN Phase**: All tests passing ✅
+
+### Code Quality & Refactor for User Story 1
+
+- [ ] T018 [US1] Code review prep: Verify single responsibility, type safety, DRY principles
+- [ ] T019 [US1] Performance check: Verify latency targets met, no N+1 queries
+- [ ] T020 [US1] Refactor: Extract duplicated logic, improve readability
+- [ ] T021 [US1] Documentation: Update API docs, add inline comments for "why"
+
+**Checkpoint - User Story 1 Complete**: Tests green, code quality verified, ready for review ✅
 
 ---
 
@@ -105,19 +137,33 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
+**Constitution Workflow**: RED → GREEN → REFACTOR (Tests first, then implementation, then optimization)
 
-- [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
+### Tests for User Story 2 (REQUIRED - Write First)
 
-### Implementation for User Story 2
+> **⚠️ TEST-FIRST DEVELOPMENT**: Tests → Approval → Fail → Implement → Pass → Refactor
 
-- [ ] T020 [P] [US2] Create [Entity] model in src/models/[entity].py
-- [ ] T021 [US2] Implement [Service] in src/services/[service].py
-- [ ] T022 [US2] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T023 [US2] Integrate with User Story 1 components (if needed)
+- [ ] T022 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T023 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
 
-**Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
+**Checkpoint - RED Phase**: Tests written, approved, and failing ❌
+
+### Implementation for User Story 2 (Make Tests Pass)
+
+- [ ] T024 [P] [US2] Create [Entity] model in src/models/[entity].py
+- [ ] T025 [US2] Implement [Service] in src/services/[service].py
+- [ ] T026 [US2] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T027 [US2] Integrate with User Story 1 components (if needed)
+
+**Checkpoint - GREEN Phase**: All tests passing ✅
+
+### Code Quality & Refactor for User Story 2
+
+- [ ] T028 [US2] Code review prep and quality verification
+- [ ] T029 [US2] Performance validation
+- [ ] T030 [US2] Refactor and documentation
+
+**Checkpoint - User Story 2 Complete**: Tests green, code quality verified ✅
 
 ---
 
@@ -127,18 +173,30 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
+**Constitution Workflow**: RED → GREEN → REFACTOR
 
-- [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
+### Tests for User Story 3 (REQUIRED - Write First)
 
-### Implementation for User Story 3
+- [ ] T031 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T032 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
 
-- [ ] T026 [P] [US3] Create [Entity] model in src/models/[entity].py
-- [ ] T027 [US3] Implement [Service] in src/services/[service].py
-- [ ] T028 [US3] Implement [endpoint/feature] in src/[location]/[file].py
+**Checkpoint - RED Phase**: Tests written, approved, and failing ❌
 
-**Checkpoint**: All user stories should now be independently functional
+### Implementation for User Story 3 (Make Tests Pass)
+
+- [ ] T033 [P] [US3] Create [Entity] model in src/models/[entity].py
+- [ ] T034 [US3] Implement [Service] in src/services/[service].py
+- [ ] T035 [US3] Implement [endpoint/feature] in src/[location]/[file].py
+
+**Checkpoint - GREEN Phase**: All tests passing ✅
+
+### Code Quality & Refactor for User Story 3
+
+- [ ] T036 [US3] Code review prep and quality verification
+- [ ] T037 [US3] Performance validation
+- [ ] T038 [US3] Refactor and documentation
+
+**Checkpoint - All User Stories Complete**: All tests green, quality verified ✅
 
 ---
 
@@ -148,14 +206,41 @@ Examples of foundational tasks (adjust based on your project):
 
 ## Phase N: Polish & Cross-Cutting Concerns
 
-**Purpose**: Improvements that affect multiple user stories
+**Purpose**: Improvements that affect multiple user stories or ensure overall quality
+
+**Constitution Gates**: Verify all quality, testing, UX, and performance requirements are met
 
 - [ ] TXXX [P] Documentation updates in docs/
+  - API documentation complete with examples
+  - User guides updated
+  - Architecture notes reflect current design
 - [ ] TXXX Code cleanup and refactoring
+  - DRY violations addressed (3+ duplications refactored)
+  - Single responsibility verified across codebase
+  - Type annotations complete for all public APIs
 - [ ] TXXX Performance optimization across all stories
-- [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
+  - Latency targets verified (< 100ms interactions, < 200ms p95 APIs)
+  - N+1 query problems eliminated
+  - Resource constraints validated (memory bounds, no blocking operations)
+- [ ] TXXX [P] Additional unit tests (if needed to meet coverage targets)
+  - Overall coverage ≥ 80%
+  - Business logic coverage ≥ 90%
+  - Critical paths coverage = 100%
 - [ ] TXXX Security hardening
+  - Dependency vulnerability scan passed
+  - Error messages don't leak sensitive data
+  - Input validation on all user-facing inputs
+- [ ] TXXX Accessibility audit (for user-facing features)
+  - WCAG 2.1 Level AA compliance verified
+  - Keyboard navigation tested
+  - Screen reader compatibility confirmed
+- [ ] TXXX Performance monitoring setup
+  - Instrumentation on all endpoints
+  - Alerts configured for regressions
+  - Performance budgets in CI/CD
 - [ ] TXXX Run quickstart.md validation
+
+**Final Quality Gate**: All constitution principles verified before deployment ✅
 
 ---
 
@@ -176,13 +261,28 @@ Examples of foundational tasks (adjust based on your project):
 - **User Story 2 (P2)**: Can start after Foundational (Phase 2) - May integrate with US1 but should be independently testable
 - **User Story 3 (P3)**: Can start after Foundational (Phase 2) - May integrate with US1/US2 but should be independently testable
 
-### Within Each User Story
+### Within Each User Story (Constitution Enforcement)
 
-- Tests (if included) MUST be written and FAIL before implementation
-- Models before services
-- Services before endpoints
-- Core implementation before integration
-- Story complete before moving to next priority
+**Test-First Development (Mandatory)**:
+1. **RED Phase**: Write tests based on acceptance criteria → Get approval → Tests FAIL
+2. **GREEN Phase**: Implementation to make tests pass
+3. **REFACTOR Phase**: Code quality improvements while keeping tests green
+
+**Code Quality Standards**:
+- Tests → Models → Services → Endpoints → Integration
+- Type annotations before implementation
+- Error handling explicit in all code paths
+- Single responsibility verified during refactor
+
+**Coverage Requirements**:
+- Contract tests for all public APIs (100% coverage)
+- Integration tests for all user journeys (per acceptance criteria)
+- Overall coverage targets met (80% minimum)
+
+**Quality Gates**:
+- Code review approval required
+- Performance targets verified
+- No linting or type-checking errors
 
 ### Parallel Opportunities
 

@@ -31,7 +31,28 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+**Code Quality Standards**:
+- [ ] Feature design supports single responsibility (components have clear, focused purposes)
+- [ ] Type safety strategy defined (types for all public APIs and data models)
+- [ ] Error handling approach documented (no silent failures, errors include context)
+- [ ] Code review process confirmed (peer review required for all changes)
+
+**Test-First Development**:
+- [ ] Test categories identified (contract tests for APIs, integration tests for user journeys)
+- [ ] Coverage targets defined (100% for critical paths and public APIs, 90% for business logic, 80% overall)
+- [ ] TDD workflow planned (tests written → approved → fail → implement → pass → refactor)
+
+**User Experience Consistency** *(if user-facing features)*:
+- [ ] Design system compliance confirmed (UI components follow documented patterns)
+- [ ] Accessibility requirements defined (WCAG 2.1 Level AA targets)
+- [ ] Error message strategy documented (actionable, contextual user messages)
+- [ ] Loading and feedback states specified (all async operations have indicators)
+
+**Performance Requirements**:
+- [ ] Latency targets defined (< 100ms interactions, < 200ms p95 APIs, < 2s page loads)
+- [ ] Resource constraints identified (memory bounds, no blocking operations, payload limits)
+- [ ] Scalability requirements documented (horizontal scaling, query optimization, 10x load handling)
+- [ ] Performance monitoring plan (instrumentation, alerts, CI/CD budgets)
 
 ## Project Structure
 
